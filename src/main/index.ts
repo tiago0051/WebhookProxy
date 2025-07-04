@@ -62,7 +62,10 @@ app.on('window-all-closed', () => {
 })
 
 function startSocket(baseUrl: string, verifierCode: string): void {
-  const socket = io(`https://webhook-proxy.devsoftbr.com`, {
+  const socketUrl = 'https://webhook-proxy.devsoftbr.com'
+  // const socketUrl = 'http://localhost:3000'
+
+  const socket = io(socketUrl, {
     auth: {
       verifierCode
     }
@@ -94,9 +97,9 @@ function startSocket(baseUrl: string, verifierCode: string): void {
       } catch (error) {
         if (isAxiosError(error)) {
           response = error.response
+        } else {
+          throw error
         }
-
-        throw error
       }
 
       socket.emit('http_response', {
